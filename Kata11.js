@@ -1,0 +1,33 @@
+// Given a string of words, you need to find the highest scoring word.
+
+// Each letter of a word scores points according to its position in the alphabet: a = 1, b = 2, c = 3 etc.
+
+// For example, the score of abad is 8 (1 + 2 + 1 + 4).
+
+// You need to return the highest scoring word as a string.
+
+// If two words score the same, return the word that appears earliest in the original string.
+
+// All letters will be lowercase and all inputs will be valid.
+
+function high(x) {
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  let scoreList = [];
+
+  x.split(" ").forEach((word) => {
+    let scoreWord = 0;
+    word.split("").forEach((letter) => {
+      let score = 0;
+      letters.split("").forEach((element) => {
+        score += 1;
+        if (element == letter) {
+          scoreWord += score;
+        }
+      });
+    });
+    scoreList.push(scoreWord);
+  });
+  return x.split(" ")[scoreList.indexOf(Math.max(...scoreList))];
+}
+
+console.log(high("what time are we climbing up the volcano"));
