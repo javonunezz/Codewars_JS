@@ -1,34 +1,48 @@
-// Build Tower
-// Build a pyramid-shaped tower, as an array/list of strings, given a positive integer number of floors. A tower block is represented with "*" character.
+// Implement a pseudo-encryption algorithm which given a string S and an integer N concatenates all the odd-indexed characters of S with all the even-indexed characters of S, this process should be repeated N times.
 
-// For example, a tower with 3 floors looks like this:
+// Examples:
 
-// [
-//   "  *  ",
-//   " *** ",
-//   "*****"
-// ]
-// And a tower with 6 floors looks like this:
+// encrypt("012345", 1)  =>  "135024"
+// encrypt("012345", 2)  =>  "135024"  ->  "304152"
+// encrypt("012345", 3)  =>  "135024"  ->  "304152"  ->  "012345"
 
-// [
-//   "     *     ",
-//   "    ***    ",
-//   "   *****   ",
-//   "  *******  ",
-//   " ********* ",
-//   "***********"
-// ]
+// encrypt("01234", 1)  =>  "13024"
+// encrypt("01234", 2)  =>  "13024"  ->  "32104"
+// encrypt("01234", 3)  =>  "13024"  ->  "32104"  ->  "20314"
+// Together with the encryption function, you should also implement a decryption function which reverses the process.
 
-function towerBuilder(nFloors) {
-  let towerBase = "*".repeat(nFloors + nFloors - 1);
-  const towerList = towerBase.split("");
-  let towerBuild = [];
-  for (let i = 0; i < nFloors; i++) {
-    towerBuild.push(towerList.join(""));
-    towerList[towerList.length - 1 - i] = " ";
-    towerList[i] = " ";
+// If the string S is an empty value or the integer N is not positive, return the first argument without changes.
+
+function encrypt(text, n) {
+  if (text === "" || n <= 0) {
+    return text;
   }
-  return towerBuild.reverse();
+  let oddChars = "";
+  let evenChars = "";
+  for (let i = 0; i < text.length; i++) {
+    if (i % 2 === 0) {
+      evenChars += text[i];
+    } else {
+      oddChars += text[i];
+    }
+  }
+  const encryptedText = oddChars + evenChars;
+  return encrypt(encryptedText, n - 1);
 }
 
-console.log(towerBuilder(3));
+function decrypt(text, n) {
+  if (text === "" || n <= 0) {
+    return text;
+  }
+  const halfLength = Math.floor(text.length / 2);
+  const oddChars = text.slice(0, halfLength);
+  const evenChars = text.slice(halfLength);
+  let decryptedText = "";
+  for (let i = 0; i < halfLength; i++) {
+    decryptedText += evenChars[i] + oddChars[i];
+  }
+  return decrypt(decryptedText, n - 1);
+}
+
+console.log(encrypt("012345", 2));
+console.log(decrypt("304152", 2));

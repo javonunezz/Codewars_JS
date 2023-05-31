@@ -6,21 +6,15 @@
 
 // Don't forget the space after the closing parentheses!
 
-function createPhoneNumber(numbers){
-    return "(" + numbers.slice(0, 3).join("") + ")" + " " + numbers.slice(3, 6).join("") + "-" + numbers.slice(6, 10).join("")
+function createPhoneNumber(numbers) {
+  return (
+    "(" +
+    numbers.slice(0, 3).join("") +
+    ")" +
+    " " +
+    numbers.slice(3, 6).join("") +
+    "-" +
+    numbers.slice(6, 10).join("")
+  );
 }
 console.log(createPhoneNumber([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]));
-
-
-// Best solution
-
-function createPhoneNumber(numbers){
-var format = "(xxx) xxx-xxxx";
-  
-for(var i = 0; i < numbers.length; i++)
-{
-  format = format.replace('x', numbers[i]);
-}
-
-return format;
-}

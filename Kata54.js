@@ -1,34 +1,23 @@
-function dirReduc(arr) {
-  const oppositeDirs = {
-    NORTH: "SOUTH",
-    SOUTH: "NORTH",
-    EAST: "WEST",
-    WEST: "EAST",
-  };
-
-  function reduceDirections(arr) {
-    let reduced = false;
-    const result = [];
-
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i + 1] === oppositeDirs[arr[i]]) {
-        reduced = true;
-        i++; // Saltamos a los dos siguientes para no considerar el siguiente
-      } else {
-        result.push(arr[i]);
-      }
-    }
-
-    if (reduced) {
-      return reduceDirections(result);
-    } else {
-      return result;
-    }
+function titleCase(title, minorWords = "") {
+  function upperFirstWord(word) {
+    const upperWord = word.toLowerCase().replace(/^\w/, function (l) {
+      return l.toUpperCase();
+    });
+    return upperWord;
   }
-
-  return reduceDirections(arr);
+  if (title === "") return "";
+  const lowerTitle = title[0].toUpperCase() + title.slice(1).toLowerCase();
+  const lowerMinorWords = minorWords.toLowerCase();
+  let listWords = lowerTitle.split(" ");
+  const invalidWords = lowerMinorWords.split(" ");
+  const result = [listWords[0]].concat(
+    listWords
+      .slice(1)
+      .map((word) =>
+        invalidWords.includes(word) ? word.toLowerCase() : upperFirstWord(word)
+      )
+  );
+  return result.join(" ");
 }
 
-console.log(
-  dirReduc(["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"])
-);
+console.log(titleCase("a clash of KINGS', 'a an the of"));

@@ -1,27 +1,93 @@
-// Introduction
-// The wave (known as the Mexican wave in the English-speaking world outside North America) is an example of metachronal rhythm achieved in a packed stadium when successive groups of spectators briefly stand, yell, and raise their arms. Immediately upon stretching to full height, the spectator returns to the usual seated position.
+// The number
+// 89
+// 89 is the first integer with more than one digit that fulfills the property partially introduced in the title of this kata. What's the use of saying "Eureka"? Because this sum gives the same number:
+// 89
+// =
+// 8
+// 1
+// +
+// 9
+// 2
+// 89=8
+// 1
+//  +9
+// 2
 
-// The result is a wave of standing spectators that travels through the crowd, even though individual spectators never move away from their seats. In many large arenas the crowd is seated in a contiguous circuit all the way around the sport field, and so the wave is able to travel continuously around the arena; in discontiguous seating arrangements, the wave can instead reflect back and forth through the crowd. When the gap in seating is narrow, the wave can sometimes pass through it. Usually only one wave crest will be present at any given time in an arena, although simultaneous, counter-rotating waves have been produced. (Source Wikipedia)
+// The next number in having this property is
+// 135
+// 135:
+
+// See this property again:
+// 135
+// =
+// 1
+// 1
+// +
+// 3
+// 2
+// +
+// 5
+// 3
+// 135=1
+// 1
+//  +3
+// 2
+//  +5
+// 3
+
 // Task
-// In this simple Kata your task is to create a function that turns a string into a Mexican Wave. You will be passed a string and you must return that string in an array where an uppercase letter is a person standing up.
-// Rules
-//  1.  The input string will always be lower case but maybe empty.
+// We need a function to collect these numbers, that may receive two integers
+// �
+// a,
+// �
+// b that defines the range
+// [
+// �
+// ,
+// �
+// ]
+// [a,b] (inclusive) and outputs a list of the sorted numbers in the range that fulfills the property described above.
 
-//  2.  If the character in the string is whitespace then pass over it as if it was an empty seat
-// Example
-// wave("hello") => ["Hello", "hEllo", "heLlo", "helLo", "hellO"]
-// Good luck and enjoy!
+// Examples
+// Let's see some cases (input -> output):
 
-function wave(str) {
-  let list = [];
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] !== " ") {
-      list.push(
-        str.slice(0, i) + str[i].toUpperCase() + str.slice(i + 1, str.length)
-      );
-    }
+// 1, 10  --> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+// 1, 100 --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 89]
+// If there are no numbers of this kind in the range
+// [
+// �
+// ,
+// �
+// ]
+// [a,b] the function should output an empty list.
+
+// 90, 100 --> []
+// Enjoy it!!
+
+function reviewEureka(number) {
+  let listNumber = number.toString().split("");
+  for (let i = 0; i < listNumber.length; i++) {
+    listNumber[i] = Number(listNumber[i]) ** (i + 1);
   }
-  return list;
+  number = listNumber.reduce((a, b) => a + b, 0);
+  return number;
 }
 
-wave("");
+function sumDigPow(a, b) {
+  let list = [];
+  for (let i = a; i < b; i++) {
+    if (reviewEureka(i) == i) {
+      list.push(i);
+    }
+  }
+  return list.length === 0 ? [] : list;
+}
+
+sumDigPow(1, 100);
+
+// solucion de mierda
+const EUREKAS = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 89, 135, 175, 518, 598, 1306, 1676, 2427, 2646798,
+];
+
+const sumDigPow = (a, b) => EUREKAS.filter((n) => a <= n && n <= b);

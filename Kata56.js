@@ -1,109 +1,42 @@
-// Automatons, or Finite State Machines (FSM), are extremely useful to programmers when it comes to software design. You will be given a simplistic version of an FSM to code for a basic TCP session.
+// In mathematics, the factorial of integer n is written as n!. It is equal to the product of n and every integer preceding it. For example: 5! = 1 x 2 x 3 x 4 x 5 = 120
 
-// The outcome of this exercise will be to return the correct state of the TCP FSM based on the array of events given.
+// Your mission is simple: write a function that takes an integer n and returns the value of n!.
 
-// The input array of events will consist of one or more of the following strings:
+// You are guaranteed an integer argument. For any values outside the non-negative range, return null, nil or None (return an empty string "" in C and C++). For non-negative numbers a full length number is expected for example, return 25! =  "15511210043330985984000000"  as a string.
 
-// APP_PASSIVE_OPEN, APP_ACTIVE_OPEN, APP_SEND, APP_CLOSE, APP_TIMEOUT, RCV_SYN, RCV_ACK, RCV_SYN_ACK, RCV_FIN, RCV_FIN_ACK
-// The states are as follows and should be returned in all capital letters as shown:
+// For more on factorials, see http://en.wikipedia.org/wiki/Factorial
 
-// CLOSED, LISTEN, SYN_SENT, SYN_RCVD, ESTABLISHED, CLOSE_WAIT, LAST_ACK, FIN_WAIT_1, FIN_WAIT_2, CLOSING, TIME_WAIT
-// The input will be an array of events. Your job is to traverse the FSM as determined by the events, and return the proper state as a string, all caps, as shown above.
+// NOTES:
 
-// If an event is not applicable to the current state, your code will return "ERROR".
+// The use of BigInteger or BigNumber functions has been disabled, this requires a complex solution
 
-// Action of each event upon each state:
-// (the format is INITIAL_STATE: EVENT -> NEW_STATE)
+// I have removed the use of require in the javascript language.
+function multiplyBigIntegers(a, b) {
+  const product = Array(a.length + b.length).fill(0);
 
-// CLOSED: APP_PASSIVE_OPEN -> LISTEN
-// CLOSED: APP_ACTIVE_OPEN  -> SYN_SENT
-// LISTEN: RCV_SYN          -> SYN_RCVD
-// LISTEN: APP_SEND         -> SYN_SENT
-// LISTEN: APP_CLOSE        -> CLOSED
-// SYN_RCVD: APP_CLOSE      -> FIN_WAIT_1
-// SYN_RCVD: RCV_ACK        -> ESTABLISHED
-// SYN_SENT: RCV_SYN        -> SYN_RCVD
-// SYN_SENT: RCV_SYN_ACK    -> ESTABLISHED
-// SYN_SENT: APP_CLOSE      -> CLOSED
-// ESTABLISHED: APP_CLOSE   -> FIN_WAIT_1
-// ESTABLISHED: RCV_FIN     -> CLOSE_WAIT
-// FIN_WAIT_1: RCV_FIN      -> CLOSING
-// FIN_WAIT_1: RCV_FIN_ACK  -> TIME_WAIT
-// FIN_WAIT_1: RCV_ACK      -> FIN_WAIT_2
-// CLOSING: RCV_ACK         -> TIME_WAIT
-// FIN_WAIT_2: RCV_FIN      -> TIME_WAIT
-// TIME_WAIT: APP_TIMEOUT   -> CLOSED
-// CLOSE_WAIT: APP_CLOSE    -> LAST_ACK
-// LAST_ACK: RCV_ACK        -> CLOSED
-// "EFSM TCP"
+  for (let i = a.length - 1; i >= 0; i--) {
+    let carry = 0;
 
-// Examples
-// ["APP_PASSIVE_OPEN", "APP_SEND", "RCV_SYN_ACK"] =>  "ESTABLISHED"
-
-// ["APP_ACTIVE_OPEN"] =>  "SYN_SENT"
-
-// ["APP_ACTIVE_OPEN", "RCV_SYN_ACK", "APP_CLOSE", "RCV_FIN_ACK", "RCV_ACK"] =>  "ERROR"
-// This kata is similar to Design a Simple Automaton (Finite State Machine), and you may wish to try that kata before tackling this one.
-
-// See wikipedia page Transmission Control Protocol for further details.
-
-// See http://www.medianet.kent.edu/techreports/TR2005-07-22-tcp-EFSM.pdf page 4, for the FSM diagram used for this kata.
-
-function traverseTCPStates(eventList) {
-  let state = "CLOSED";
-
-  const transitions = {
-    CLOSED: {
-      APP_PASSIVE_OPEN: "LISTEN",
-      APP_ACTIVE_OPEN: "SYN_SENT",
-    },
-    LISTEN: {
-      RCV_SYN: "SYN_RCVD",
-      APP_SEND: "SYN_SENT",
-      APP_CLOSE: "CLOSED",
-    },
-    SYN_RCVD: {
-      APP_CLOSE: "FIN_WAIT_1",
-      RCV_ACK: "ESTABLISHED",
-    },
-    SYN_SENT: {
-      RCV_SYN: "SYN_RCVD",
-      RCV_SYN_ACK: "ESTABLISHED",
-      APP_CLOSE: "CLOSED",
-    },
-    ESTABLISHED: {
-      APP_CLOSE: "FIN_WAIT_1",
-      RCV_FIN: "CLOSE_WAIT",
-    },
-    FIN_WAIT_1: {
-      RCV_FIN: "CLOSING",
-      RCV_FIN_ACK: "TIME_WAIT",
-      RCV_ACK: "FIN_WAIT_2",
-    },
-    CLOSING: {
-      RCV_ACK: "TIME_WAIT",
-    },
-    FIN_WAIT_2: {
-      RCV_FIN: "TIME_WAIT",
-    },
-    TIME_WAIT: {
-      APP_TIMEOUT: "CLOSED",
-    },
-    CLOSE_WAIT: {
-      APP_CLOSE: "LAST_ACK",
-    },
-    LAST_ACK: {
-      RCV_ACK: "CLOSED",
-    },
-  };
-
-  for (let event of eventList) {
-    if (transitions[state][event]) {
-      state = transitions[state][event];
-    } else {
-      return "ERROR";
+    for (let j = b.length - 1; j >= 0; j--) {
+      const digitA = parseInt(a[i]);
+      const digitB = parseInt(b[j]);
+      const partialProduct = digitA * digitB + carry + product[i + j + 1];
+      product[i + j + 1] = partialProduct % 10;
+      carry = Math.floor(partialProduct / 10);
     }
+    product[i] += carry;
   }
 
-  return state;
+  return product.join("").replace(/^0+/, "");
 }
+function factorial(n) {
+  if (n < 0) return null;
+  let number = "1";
+  let stringNum = "";
+  for (let i = 1; i <= n; i++) {
+    number = multiplyBigIntegers(number, i.toString());
+  }
+  return number;
+}
+
+console.log(multiplyBigIntegers("258", "122"));

@@ -1,51 +1,43 @@
-// The drawing below gives an idea of how to cut a given "true" rectangle into squares ("true" rectangle meaning that the two dimensions are different).
+// Some numbers have funny properties. For example:
 
-// alternative text
+// 89 --> 8¹ + 9² = 89 * 1
 
-// Can you translate this drawing into an algorithm?
+// 695 --> 6² + 9³ + 5⁴= 1390 = 695 * 2
 
-// You will be given two dimensions
+// 46288 --> 4³ + 6⁴+ 2⁵ + 8⁶ + 8⁷ = 2360688 = 46288 * 51
 
-// a positive integer length
-// a positive integer width
-// You will return a collection or a string (depending on the language; Shell bash, PowerShell, Pascal and Fortran return a string) with the size of each of the squares.
+// Given a positive integer n written as abcd... (a, b, c, d... being digits) and a positive integer p
 
-// Examples in general form:
-// (depending on the language)
+// we want to find a positive integer k, if it exists, such that the sum of the digits of n taken to the successive powers of p is equal to k * n.
+// In other words:
 
-//   sqInRect(5, 3) should return [3, 2, 1, 1]
-//   sqInRect(3, 5) should return [3, 2, 1, 1]
+// Is there an integer k such as : (a ^ p + b ^ (p+1) + c ^(p+2) + d ^ (p+3) + ...) = n * k
 
-//   You can see examples for your language in **"SAMPLE TESTS".**
-// Notes:
-// lng == wdth as a starting case would be an entirely different problem and the drawing is planned to be interpreted with lng != wdth. (See kata, Square into Squares. Protect trees! http://www.codewars.com/kata/54eb33e5bc1a25440d000891 for this problem).
+// If it is the case we will return k, if not return -1.
 
-// When the initial parameters are so that lng == wdth, the solution [lng] would be the most obvious but not in the spirit of this kata so, in that case, return None/nil/null/Nothing or return {} with C++, Array() with Scala, [] with Perl, Raku.
+// Note: n and p will always be given as strictly positive integers.
 
-// In that case the returned structure of C will have its sz component equal to 0.
+// digPow(89, 1) should return 1 since 8¹ + 9² = 89 = 89 * 1
+// digPow(92, 1) should return -1 since there is no k such as 9¹ + 2² equals 92 * k
+// digPow(695, 2) should return 2 since 6² + 9³ + 5⁴= 1390 = 695 * 2
+// digPow(46288, 3) should return 51 since 4³ + 6⁴+ 2⁵ + 8⁶ + 8⁷ = 2360688 = 46288 * 51
 
-// Return the string "nil" with Bash, PowerShell, Pascal and Fortran.
-
-function sqInRect(lng, wdth) {
-  if (lng === wdth) return null;
-  let squares = [];
-  let a = lng;
-  let b = wdth;
-  while (a != 0 && b != 0) {
-    if (a > b) {
-      a -= b;
-      squares.push(b);
-    } else if (b > a) {
-      b -= a;
-      squares.push(a);
-    } else {
-      b = 0;
-      squares.push(a);
-    }
+function digPow(n, p) {
+  let numberList = n
+    .toString()
+    .split("")
+    .map((numberStr) => Number(numberStr));
+  let k = p;
+  for (let i = 0; i < numberList.length; i++) {
+    numberList[i] = numberList[i] ** k;
+    k++;
   }
-  return squares;
+  numberP = numberList.reduce((a, b) => a + b, 0);
+  if (numberP % n == 0) {
+    return numberP / n;
+  } else {
+    return -1;
+  }
 }
 
-//your code here
-
-console.log(sqInRect(20, 14));
+console.log(digPow(46288, 3));

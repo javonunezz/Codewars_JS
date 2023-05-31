@@ -1,22 +1,25 @@
-// Rock Paper Scissors
-// Let's play! You have to return which player won! In case of a draw return Draw!.
+// Your task, is to create N×N multiplication table, of size provided in parameter.
 
-// Examples(Input1, Input2 --> Output):
+// For example, when given size is 3:
 
-// "scissors", "paper" --> "Player 1 won!"
-// "scissors", "rock" --> "Player 2 won!"
-// "paper", "paper" --> "Draw!"
+// 1 2 3
+// 2 4 6
+// 3 6 9
+// For the given example, the return value should be:
 
-const rps = (p1, p2) => {
-  if (
-    (p1 == "scrissors" && p2 == "paper") ||
-    (p1 == "rock" && p2 == "scissors") ||
-    (p1 == "rock" && p2 == "scrissors")
-  ) {
-    return "Player 1 won!";
-  } else if (p1 === p2) {
-    return "Draw";
-  } else {
-    return "Player 2 won!";
+// [[1,2,3],[2,4,6],[3,6,9]]
+
+multiplicationTable = function (size) {
+  let initialList = [];
+  let listBig = [];
+  for (let i = 1; i < size + 1; i++) {
+    initialList.push(i);
   }
+  for (let i = 1; i < size + 1; i++) {
+    const listAdd = initialList.map((number) => number * i);
+    listBig.push(listAdd);
+  }
+  return listBig;
 };
+
+multiplicationTable(3);

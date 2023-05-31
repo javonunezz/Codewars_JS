@@ -1,26 +1,33 @@
-// You probably know the "like" system from Facebook and other pages. People can "like" blog posts, pictures or other items. We want to create the text that should be displayed next to such an item.
+// Write a function, persistence, that takes in a positive parameter num and returns its multiplicative persistence, which is the number of times you must multiply the digits in num until you reach a single digit.
 
-// Implement the function which takes an array containing the names of people that like an item. It must return the display text as shown in the examples:
+// For example (Input --> Output):
 
-// []                                -->  "no one likes this"
-// ["Peter"]                         -->  "Peter likes this"
-// ["Jacob", "Alex"]                 -->  "Jacob and Alex like this"
-// ["Max", "John", "Mark"]           -->  "Max, John and Mark like this"
-// ["Alex", "Jacob", "Mark", "Max"]  -->  "Alex, Jacob and 2 others like this"
-// Note: For 4 or more names, the number in "and 2 others" simply increases.
+// 39 --> 3 (because 3*9 = 27, 2*7 = 14, 1*4 = 4 and 4 has only one digit)
+// 999 --> 4 (because 9*9*9 = 729, 7*2*9 = 126, 1*2*6 = 12, and finally 1*2 = 2)
+// 4 --> 0 (because 4 is already a one-digit number)
 
-function likes(names) {
-  if (names.length == 0) {
-    return "no one likes this";
-  } else if (names.length == 1) {
-    return `${names[0]} likes this`;
-  } else if (names.length == 2) {
-    return `${names[0]} and ${names[1]} like this`;
-  } else if (names.length == 3) {
-    return `${names[0]}, ${names[1]} and ${names[2]} like this`;
+function persistence(num) {
+  let times = 0;
+  let bool = true;
+  if (num.toString().split("").length == 1) {
+    return 0;
   } else {
-    return `${names[0]}, ${names[1]} and ${names.length - 2} others like this`;
+    while (bool) {
+      let number = num
+        .toString()
+        .split("")
+        .reduce(
+          (accumulator, currentValue) =>
+            parseInt(accumulator) * parseInt(currentValue)
+        );
+      times += 1;
+      if (number.toString().split("").length == 1) {
+        bool = false;
+      }
+      num = number;
+    }
+    return times;
   }
 }
 
-console.log(likes(["Alex", "Jacob", "Mark", "Max"]));
+console.log(persistence(999));

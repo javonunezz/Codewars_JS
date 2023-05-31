@@ -1,25 +1,27 @@
-// Your task is to make a function that can take any non-negative integer as an argument and return it with its digits in descending order. Essentially, rearrange the digits to create the highest possible number.
+// Find the missing letter
+// Write a method that takes an array of consecutive (increasing) letters as input and that returns the missing letter in the array.
 
-// Examples:
-// Input: 42145 Output: 54421
+// You will always get an valid array. And it will be always exactly one letter be missing. The length of the array will always be at least 2.
+// The array will always contain letters in only one case.
 
-// Input: 145263 Output: 654321
+// Example:
 
-// Input: 123456789 Output: 987654321              [12345]            [1]       [12345]
+// ['a','b','c','d','f'] -> 'e'
+// ['O','Q','R','S'] -> 'P'
+// (Use the English alphabet with 26 letters!)
 
-function descendingOrder(n) {
-  const list = n.toString().split("");
-  for (let i = 0; i < list.length; i++) {
-    for (let j = 0; j < list.length; j++) {
-      if (list[j] < list[j + 1]) {
-        let aux = list[j];
-        list[j] = list[j + 1];
-        list[j + 1] = aux;
-      }
-    }
+// Have fun coding it and please don't forget to vote and rank this kata! :-)
+
+// I have also created other katas. Take a look if you enjoyed this kata!
+const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+function findMissingLetter(array) {
+  let newAlphabet = alphabet.slice(
+    alphabet.indexOf(array[0]),
+    alphabet.indexOf(array[array.length - 1]) + 1
+  );
+  for (let i = 0; i < newAlphabet.length; i++) {
+    if (!array.includes(newAlphabet[i])) return newAlphabet[i];
   }
-  console.log(typeof list.join(""));
-  return list.join("");
 }
-
-descendingOrder(423154325);
+console.log(findMissingLetter(["a", "b", "c", "d", "f"]));

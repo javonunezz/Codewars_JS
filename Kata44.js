@@ -1,21 +1,24 @@
-// There is an array with some numbers. All numbers are equal except for one. Try to find it!
+// Write a function toWeirdCase (weirdcase in Ruby) that accepts a string, and returns the same string with all even indexed characters in each word upper cased, and all odd indexed characters in each word lower cased. The indexing just explained is zero based, so the zero-ith index is even, therefore that character should be upper cased and you need to start over for each word.
 
-// findUniq([ 1, 1, 1, 2, 1, 1 ]) === 2
-// findUniq([ 0, 0, 0.55, 0, 0 ]) === 0.55
-// It’s guaranteed that array contains at least 3 numbers.
+// The passed in string will only consist of alphabetical characters and spaces(' '). Spaces will only be present if there are multiple words. Words will be separated by a single space(' ').
 
-// The tests contain some very huge arrays, so think about performance.
+// Examples:
+// toWeirdCase( "String" );//=> returns "StRiNg"
+// toWeirdCase( "Weird string case" );//=> returns "WeIrD StRiNg CaSe"
 
-// This is the first kata in series:
-
-// Find the unique number (this kata)
-// Find the unique string
-// Find The Unique
-
-function findUniq(arr) {
-  return arr.filter((number) => number === arr[0]).length === 1
-    ? arr[0]
-    : arr.filter((number) => number !== arr[0])[0];
+function toWeirdCase(string) {
+  let newString = "";
+  let upper = true;
+  for (letter of string) {
+    if (upper && letter != " ") {
+      newString += letter.toUpperCase();
+      upper = false;
+    } else {
+      newString += letter;
+      upper = true;
+    }
+  }
+  return newString;
 }
 
-console.log(findUniq([1, 1, 1, 1, 1, 2]));
+console.log(toWeirdCase("This is a test"));

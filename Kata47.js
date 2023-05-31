@@ -1,24 +1,25 @@
-// Write a function toWeirdCase (weirdcase in Ruby) that accepts a string, and returns the same string with all even indexed characters in each word upper cased, and all odd indexed characters in each word lower cased. The indexing just explained is zero based, so the zero-ith index is even, therefore that character should be upper cased and you need to start over for each word.
+// Write an algorithm that will identify valid IPv4 addresses in dot-decimal format. IPs should be considered valid if they consist of four octets, with values between 0 and 255, inclusive.
 
-// The passed in string will only consist of alphabetical characters and spaces(' '). Spaces will only be present if there are multiple words. Words will be separated by a single space(' ').
+// Valid inputs examples:
+// Examples of valid inputs:
+// 1.2.3.4
+// 123.45.67.89
+// Invalid input examples:
+// 1.2.3
+// 1.2.3.4.5
+// 123.456.78.90
+// 123.045.067.089
+// Notes:
+// Leading zeros (e.g. 01.02.03.04) are considered invalid
+// Inputs are guaranteed to be a single string
 
-// Examples:
-// toWeirdCase( "String" );//=> returns "StRiNg"
-// toWeirdCase( "Weird string case" );//=> returns "WeIrD StRiNg CaSe"
-
-function toWeirdCase(string) {
-  let newString = "";
-  let upper = true;
-  for (letter of string) {
-    if (upper && letter != " ") {
-      newString += letter.toUpperCase();
-      upper = false;
-    } else {
-      newString += letter;
-      upper = true;
-    }
-  }
-  return newString;
+function isValidIP(str) {
+  if (str.split(".").length != 4) return false;
+  return str
+    .split(".")
+    .every(
+      (number) =>
+        number >= 0 && number <= 255 && number === Number(number).toString()
+    );
 }
-
-console.log(toWeirdCase("This is a test"));
+console.log(isValidIP("1.1.1.1"));

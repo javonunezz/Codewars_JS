@@ -1,3 +1,4 @@
+//Statement
 // In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
 
 // Examples
@@ -9,10 +10,23 @@
 // There will always be at least one number in the input string.
 // Output string must be two numbers separated by a single space, and highest number is first.
 
-function highAndLow(numbers){
-    return (Math.max(...(numbers.split(" ").map(number => parseInt(number))))) + ' ' + (Math.min(...(numbers.split(" ").map(number => parseInt(number)))))
-}   
+//Enunciado
+// En esta pequeña tarea se te da una cadena de números separados por espacios, y tienes que devolver el número más alto y el más bajo.
+
+// Ejemplos
+// highAndLow("1 2 3 4 5"); // devuelve "5 1"
+// highAndLow("1 2 -3 4 5"); // devuelve "5 -3"
+// highAndLow("1 9 3 4 -5"); // devuelve "9 -5"
+// Notas
+// Todos los números son Int32 válidos, no es necesario validarlos.
+// Siempre habrá al menos un número en la cadena de entrada.
+// La cadena de salida debe tener dos números separados por un espacio, y el número más alto es el primero.
+
+function highAndLow(numbers) {
+  return (
+    Math.max(...numbers.split(" ").map((number) => parseInt(number))) +
+    " " +
+    Math.min(...numbers.split(" ").map((number) => parseInt(number)))
+  );
+}
 console.log(highAndLow("8 3 -5 42 -1 0 0 -9 4 7 4 -4"));
-
-
-// if(letter != ' ') listNumbers.push(parseInt(letter))

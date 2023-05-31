@@ -1,48 +1,51 @@
-// Implement a pseudo-encryption algorithm which given a string S and an integer N concatenates all the odd-indexed characters of S with all the even-indexed characters of S, this process should be repeated N times.
+// The drawing below gives an idea of how to cut a given "true" rectangle into squares ("true" rectangle meaning that the two dimensions are different).
 
-// Examples:
+// alternative text
 
-// encrypt("012345", 1)  =>  "135024"
-// encrypt("012345", 2)  =>  "135024"  ->  "304152"
-// encrypt("012345", 3)  =>  "135024"  ->  "304152"  ->  "012345"
+// Can you translate this drawing into an algorithm?
 
-// encrypt("01234", 1)  =>  "13024"
-// encrypt("01234", 2)  =>  "13024"  ->  "32104"
-// encrypt("01234", 3)  =>  "13024"  ->  "32104"  ->  "20314"
-// Together with the encryption function, you should also implement a decryption function which reverses the process.
+// You will be given two dimensions
 
-// If the string S is an empty value or the integer N is not positive, return the first argument without changes.
+// a positive integer length
+// a positive integer width
+// You will return a collection or a string (depending on the language; Shell bash, PowerShell, Pascal and Fortran return a string) with the size of each of the squares.
 
-function encrypt(text, n) {
-  if (text === "" || n <= 0) {
-    return text;
-  }
-  let oddChars = "";
-  let evenChars = "";
-  for (let i = 0; i < text.length; i++) {
-    if (i % 2 === 0) {
-      evenChars += text[i];
+// Examples in general form:
+// (depending on the language)
+
+//   sqInRect(5, 3) should return [3, 2, 1, 1]
+//   sqInRect(3, 5) should return [3, 2, 1, 1]
+
+//   You can see examples for your language in **"SAMPLE TESTS".**
+// Notes:
+// lng == wdth as a starting case would be an entirely different problem and the drawing is planned to be interpreted with lng != wdth. (See kata, Square into Squares. Protect trees! http://www.codewars.com/kata/54eb33e5bc1a25440d000891 for this problem).
+
+// When the initial parameters are so that lng == wdth, the solution [lng] would be the most obvious but not in the spirit of this kata so, in that case, return None/nil/null/Nothing or return {} with C++, Array() with Scala, [] with Perl, Raku.
+
+// In that case the returned structure of C will have its sz component equal to 0.
+
+// Return the string "nil" with Bash, PowerShell, Pascal and Fortran.
+
+function sqInRect(lng, wdth) {
+  if (lng === wdth) return null;
+  let squares = [];
+  let a = lng;
+  let b = wdth;
+  while (a != 0 && b != 0) {
+    if (a > b) {
+      a -= b;
+      squares.push(b);
+    } else if (b > a) {
+      b -= a;
+      squares.push(a);
     } else {
-      oddChars += text[i];
+      b = 0;
+      squares.push(a);
     }
   }
-  const encryptedText = oddChars + evenChars;
-  return encrypt(encryptedText, n - 1);
+  return squares;
 }
 
-function decrypt(text, n) {
-  if (text === "" || n <= 0) {
-    return text;
-  }
-  const halfLength = Math.floor(text.length / 2);
-  const oddChars = text.slice(0, halfLength);
-  const evenChars = text.slice(halfLength);
-  let decryptedText = "";
-  for (let i = 0; i < halfLength; i++) {
-    decryptedText += evenChars[i] + oddChars[i];
-  }
-  return decrypt(decryptedText, n - 1);
-}
+//your code here
 
-console.log(encrypt("012345", 2));
-console.log(decrypt("304152", 2));
+console.log(sqInRect(20, 14));

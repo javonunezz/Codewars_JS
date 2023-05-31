@@ -1,59 +1,113 @@
-// We need to sum big numbers and we require your help.
+// "7777...8?!??!", exclaimed Bob, "I missed it again! Argh!" Every time there's an interesting number coming up, he notices and then promptly forgets. Who doesn't like catching those one-off interesting mileage numbers?
 
-// Write a function that returns the sum of two numbers. The input numbers are strings and the function must return a string.
+// Let's make it so Bob never misses another interesting number. We've hacked into his car's computer, and we have a box hooked up that reads mileage numbers. We've got a box glued to his dash that lights up yellow or green depending on whether it receives a 1 or a 2 (respectively).
 
-// Example
-// add("123", "321"); -> "444"
-// add("11", "99");   -> "110"
-// Notes
-// The input numbers are big.
-// The input is a string of only digits
-// The numbers are positives
+// It's up to you, intrepid warrior, to glue the parts together. Write the function that parses the mileage number input, and returns a 2 if the number is "interesting" (see below), a 1 if an interesting number occurs within the next two miles, or a 0 if the number is not interesting.
 
-function add(a, b) {
-  let numberListA = a.split("").reverse();
-  let numberListB = b.split("").reverse();
-  let numbersList = [numberListA, numberListB];
-  let numberSum = [];
-  let numbersLength = [numberListA.length, numberListB.length];
-  let numberDown =
-    numbersList[numbersLength.indexOf(Math.min(...numbersLength))];
-  let numberTop =
-    numbersList[numbersLength.indexOf(Math.max(...numbersLength))];
-  let resto = 0;
-  for (let i = 0; i < numberDown.length; i++) {
-    if (Number(numberListA[i]) + Number(numberListB[i]) + resto > 9) {
-      numberSum.push(
-        Number(numberListA[i]) + Number(numberListB[i]) + resto - 10
-      );
-      resto = 1;
-    } else {
-      numberSum.push(Number(numberListA[i]) + Number(numberListB[i]) + resto);
-      resto = 0;
+// Note: In Haskell, we use No, Almost and Yes instead of 0, 1 and 2.
+
+// "Interesting" Numbers
+// Interesting numbers are 3-or-more digit numbers that meet one or more of the following criteria:
+
+// Any digit followed by all zeros: 100, 90000
+// Every digit is the same number: 1111
+// The digits are sequential, incementing†: 1234
+// The digits are sequential, decrementing‡: 4321
+// The digits are a palindrome: 1221 or 73837
+// The digits match one of the values in the awesomePhrases array
+// † For incrementing sequences, 0 should come after 9, and not before 1, as in 7890.
+// ‡ For decrementing sequences, 0 should come after 1, and not before 9, as in 3210.
+
+// So, you should expect these inputs and outputs:
+
+// // "boring" numbers
+// isInteresting(3, [1337, 256]);    // 0
+// isInteresting(3236, [1337, 256]); // 0
+
+// // progress as we near an "interesting" number
+// isInteresting(11207, []); // 0
+// isInteresting(11208, []); // 0
+// isInteresting(11209, []); // 1
+// isInteresting(11210, []); // 1
+// isInteresting(11211, []); // 2
+
+// // nearing a provided "awesome phrase"
+// isInteresting(1335, [1337, 256]); // 1
+// isInteresting(1336, [1337, 256]); // 1
+// isInteresting(1337, [1337, 256]); // 2
+// Error Checking
+// A number is only interesting if it is greater than 99!
+// Input will always be an integer greater than 0, and less than 1,000,000,000.
+// The awesomePhrases array will always be provided, and will always be an array, but may be empty. (Not everyone thinks numbers spell funny words...)
+// You should only ever output 0, 1, or 2.
+
+const NumbersSame = (list) => {
+  return list.find((a) => list[0] != a) ? false : true;
+};
+
+const NumbersIncrementing = (list) => {
+  let timesGood = 0;
+  let timesLimit = list.length - 1;
+  for (let i = 0; i < list.length; i++) {
+    if (i != list.length - 1) {
+      if (
+        parseInt(list[i]) == parseInt(list[i + 1]) - 1 ||
+        (list[i] == "9" && list[i + 1] == "0")
+      ) {
+        timesGood += 1;
+      }
     }
   }
-  if (resto == 1 && numberListA.length == numberListB.length) {
-    numberSum.push(resto);
-    return numberSum.reverse().join("").toString();
-  } else {
-    let listresto = numberTop.slice(numberDown.length).map((digit) => {
-      if (resto == 1) {
-        if (Number(digit) + resto <= 9) {
-          let valor = Number(digit) + resto;
-          resto = 0;
-          return valor;
-        } else {
-          return Number(digit) + resto - 10;
-        }
-      } else {
-        return Number(digit);
+  return timesGood == timesLimit ? true : false;
+};
+
+const NumbersDecrementing = (list) => {
+  let timesGood = 0;
+  let timesLimit = list.length - 1;
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (i != 0) {
+      if (
+        parseInt(list[i]) + 1 == parseInt(list[i - 1]) ||
+        (list[i] == "0" && list[i - 1] == "1")
+      ) {
+        timesGood += 1;
       }
-    });
-    if (resto == 1) {
-      listresto.push(resto);
     }
-    return numberSum.concat(listresto).reverse().join("").toString();
+  }
+  return timesGood == timesLimit ? true : false;
+};
+
+const NumbersPalindrome = (list) => {
+  return list.toString() === list.reverse().toString() ? true : false;
+};
+
+function isInteresting(number, awesomePhrases) {
+  const main = (number, awesomePhrases) => {
+    const listNumber = number.toString().split("");
+    let validador = false;
+    if (number <= 99) {
+      return 0;
+    }
+    if (
+      !!awesomePhrases.find((numberInteresting) => numberInteresting == number)
+    ) {
+      return 2;
+    }
+    if (parseInt(number.toString().slice(1)) === 0) {
+      return 2;
+    }
+    validador = NumbersSame(listNumber);
+    validador = NumbersIncrementing(listNumber);
+    validador = NumbersDecrementing(listNumber);
+    validador = NumbersPalindrome(listNumber);
+    return validador ? 2 : 0;
+  };
+
+  if (main(number, awesomePhrases) == 2) {
+    return 2;
+  } else {
+    const milles = [number + 1, number + 2];
+    return milles.find((n) => main(n, awesomePhrases) == 2) ? 1 : 0;
   }
 }
-
-console.log(add("63829983432984289347293874", "90938498237058927340892374089"));
+console.log(isInteresting(1336, [1337, 256]));

@@ -1,27 +1,56 @@
-// Find the missing letter
-// Write a method that takes an array of consecutive (increasing) letters as input and that returns the missing letter in the array.
+// There is a queue for the self-checkout tills at the supermarket. Your task is write a function to calculate the total time required for all the customers to check out!
 
-// You will always get an valid array. And it will be always exactly one letter be missing. The length of the array will always be at least 2.
-// The array will always contain letters in only one case.
+// input
+// customers: an array of positive integers representing the queue. Each integer represents a customer, and its value is the amount of time they require to check out.
+// n: a positive integer, the number of checkout tills.
+// output
+// The function should return an integer, the total time required.
 
-// Example:
+// Important
+// Please look at the examples and clarifications below, to ensure you understand the task correctly :)
 
-// ['a','b','c','d','f'] -> 'e'
-// ['O','Q','R','S'] -> 'P'
-// (Use the English alphabet with 26 letters!)
+// Examples
+// queueTime([5,3,4], 1)
+// // should return 12
+// // because when there is 1 till, the total time is just the sum of the times
 
-// Have fun coding it and please don't forget to vote and rank this kata! :-)
+// queueTime([10,2,3,3], 2)
+// // should return 10
+// // because here n=2 and the 2nd, 3rd, and 4th people in the
+// // queue finish before the 1st person has finished.
 
-// I have also created other katas. Take a look if you enjoyed this kata!
-const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// queueTime([2,3,10], 2)
+// // should return 12
+// Clarifications
+// There is only ONE queue serving many tills, and
+// The order of the queue NEVER changes, and
+// The front person in the queue (i.e. the first element in the array/list) proceeds to a till as soon as it becomes free.
+// N.B. You should assume that all the test input will be valid, as specified above.
 
-function findMissingLetter(array) {
-  let newAlphabet = alphabet.slice(
-    alphabet.indexOf(array[0]),
-    alphabet.indexOf(array[array.length - 1]) + 1
-  );
-  for (let i = 0; i < newAlphabet.length; i++) {
-    if (!array.includes(newAlphabet[i])) return newAlphabet[i];
+// P.S. The situation in this kata can be likened to the more-computer-science-related idea of a thread pool, with relation to running multiple processes at the same time: https://en.wikipedia.org/wiki/Thread_pool
+
+// ARRAYSFUNDAMENTALS
+
+function queueTime(customers, n) {
+  if (customers.length === 0) {
+    return 0;
   }
+  if (n == 1) {
+    return customers.reduce((a, b) => a + b, 0);
+  }
+  if (n >= customers.length) {
+    return Math.max(...customers);
+  }
+  let acum = 0;
+  while (customers.reduce((a, b) => a + b, 0) != 0) {
+    customers = customers
+      .slice(0, n)
+      .map((number) => (number > 0 ? number - 1 : number))
+      .concat(customers.slice(n, customers.length));
+    customers.sort((a, b) => (a === 0 ? 1 : b === 0 ? -1 : 0));
+    acum++;
+  }
+  return acum;
 }
-console.log(findMissingLetter(["a", "b", "c", "d", "f"]));
+
+console.log(queueTime([10, 2, 3, 3], 2));

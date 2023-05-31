@@ -1,39 +1,27 @@
-// A child is playing with a ball on the nth floor of a tall building. The height of this floor above ground level, h, is known.
+// Introduction
+// The wave (known as the Mexican wave in the English-speaking world outside North America) is an example of metachronal rhythm achieved in a packed stadium when successive groups of spectators briefly stand, yell, and raise their arms. Immediately upon stretching to full height, the spectator returns to the usual seated position.
 
-// He drops the ball out of the window. The ball bounces (for example), to two-thirds of its height (a bounce of 0.66).
+// The result is a wave of standing spectators that travels through the crowd, even though individual spectators never move away from their seats. In many large arenas the crowd is seated in a contiguous circuit all the way around the sport field, and so the wave is able to travel continuously around the arena; in discontiguous seating arrangements, the wave can instead reflect back and forth through the crowd. When the gap in seating is narrow, the wave can sometimes pass through it. Usually only one wave crest will be present at any given time in an arena, although simultaneous, counter-rotating waves have been produced. (Source Wikipedia)
+// Task
+// In this simple Kata your task is to create a function that turns a string into a Mexican Wave. You will be passed a string and you must return that string in an array where an uppercase letter is a person standing up.
+// Rules
+//  1.  The input string will always be lower case but maybe empty.
 
-// His mother looks out of a window 1.5 meters from the ground.
+//  2.  If the character in the string is whitespace then pass over it as if it was an empty seat
+// Example
+// wave("hello") => ["Hello", "hEllo", "heLlo", "helLo", "hellO"]
+// Good luck and enjoy!
 
-// How many times will the mother see the ball pass in front of her window (including when it's falling and bouncing?
-
-// Three conditions must be met for a valid experiment:
-// Float parameter "h" in meters must be greater than 0
-// Float parameter "bounce" must be greater than 0 and less than 1
-// Float parameter "window" must be less than h.
-// If all three conditions above are fulfilled, return a positive integer, otherwise return -1.
-
-// Note:
-// The ball can only be seen if the height of the rebounding ball is strictly greater than the window parameter.
-
-// Examples:
-// - h = 3, bounce = 0.66, window = 1.5, result is 3
-
-// - h = 3, bounce = 1, window = 1.5, result is -1
-
-// (Condition 2) not fulfilled).
-
-function bouncingBall(h, bounce, window) {
-  if (h > 0 && bounce > 0 && bounce < 1 && window < h) {
-    let times = 0;
-    while (window < h) {
-      h = h * bounce;
-      if (h > window) {
-        times++;
-      }
+function wave(str) {
+  let list = [];
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] !== " ") {
+      list.push(
+        str.slice(0, i) + str[i].toUpperCase() + str.slice(i + 1, str.length)
+      );
     }
-    return times * 2 + 1;
   }
-  return -1;
+  return list;
 }
 
-console.log(bouncingBall(3, 0.66, 1.5));
+wave("");

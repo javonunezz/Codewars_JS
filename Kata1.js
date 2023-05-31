@@ -9,24 +9,23 @@
 // countBy(1,10) === [1,2,3,4,5,6,7,8,9,10]
 // countBy(2,5) === [2,4,6,8,10]
 
-function countBy(x, n) {
-    let z = [];
-    let num = x;
-    for(let i=0; i < n; i++){
-        z.push(num);
-        num = num + x;
-    };
-    return z;
-}
+// Enunciado
+// Crea una función con dos argumentos que devuelva un array con los n primeros múltiplos de x.
 
-// This function make that the number initial  to be added up to itself a number of times
+// Asumir que tanto el número dado como el número de veces a contar serán números positivos mayores que 0.
 
-// This is the best solution in CodeWars
+// Devuelve los resultados como un array o lista ( dependiendo del lenguaje ).
+
+// Ejemplos
+// countBy(1,10) === [1,2,3,4,5,6,7,8,9,10]
+// countBy(2,5) === [2,4,6,8,10]
 
 function countBy(x, n) {
-    var z = [];
-    for (i = 1; i <= n; i++) {
-        z.push(x * i);
-    }
-    return z;
+  let z = [];
+  let num = x;
+  for (let i = 0; i < n; i++) {
+    z.push(num);
+    num = num + x;
+  }
+  return z;
 }

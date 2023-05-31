@@ -1,62 +1,38 @@
-// If we were to set up a Tic-Tac-Toe game, we would want to know whether the board's current state is solved, wouldn't we? Our goal is to create a function that will check that for us!
+// Pete likes to bake some cakes. He has some recipes and ingredients. Unfortunately he is not good in maths. Can you help him to find out, how many cakes he could bake considering his recipes?
 
-// Assume that the board comes in the form of a 3x3 array, where the value is 0 if a spot is empty, 1 if it is an "X", or 2 if it is an "O", like so:
+// Write a function cakes(), which takes the recipe (object) and the available ingredients (also an object) and returns the maximum number of cakes Pete can bake (integer). For simplicity there are no units for the amounts (e.g. 1 lb of flour or 200 g of sugar are simply 1 or 200). Ingredients that are not present in the objects, can be considered as 0.
 
-// [[0, 0, 1],
-//  [0, 1, 2],
-//  [2, 1, 0]]
-// We want our function to return:
+// Examples:
 
-// -1 if the board is not yet finished AND no one has won yet (there are empty spots),
-// 1 if "X" won,
-// 2 if "O" won,
-// 0 if it's a cat's game (i.e. a draw).
-// You may assume that the board passed in is valid in the context of a game of Tic-Tac-Toe.
+// // must return 2
+// cakes({flour: 500, sugar: 200, eggs: 1}, {flour: 1200, sugar: 1200, eggs: 5, milk: 200});
+// // must return 0
+// cakes({apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100}, {sugar: 500, flour: 2000, milk: 2000});
 
-function isSolved(board) {
-  let index = 0;
-  let plays1 = ""; // "12345"
-  let plays2 = ""; // "678"
-  const playsWins = ["123", "456", "789", "159", "357", "147", "258", "369"];
-  // TODO: Check if the board is solved!
-  board.forEach((row) => {
-    row.forEach((casilla) => {
-      index += 1;
-      if (casilla == 1) {
-        plays1 += index.toString();
-      }
-      if (casilla == 2) {
-        plays2 += index.toString();
-      }
-    });
-  });
-  let winplayer = playsWins
-    .map((gamewin) => gamewin.split("").every((char) => plays1.includes(char)))
-    .find((play) => play == true);
-  if (winplayer) {
-    return 1;
-  } else {
-    let winplayer = playsWins
-      .map((gamewin) =>
-        gamewin.split("").every((char) => plays2.includes(char))
-      )
-      .find((play) => play == true);
-    if (winplayer) {
-      return 2;
-    } else {
-      if (plays1.split("").length + plays2.split("").length == 9) {
-        return 0;
-      } else {
-        return -1;
-      }
-    }
+function cakes(recipe, available) {
+  // Creamos una lista de cada parametro por sus keys respectivas
+  let recipeKeys = Object.keys(recipe);
+  let availableKeys = Object.keys(available);
+  //Creamos una variable para almacenar los ingredientes disponibles respecto a la receta
+  let availability = recipeKeys.filter((ingredient) =>
+    availableKeys.includes(ingredient)
+  );
+  //Validamos si los ingredientes disponibles y los solicitados se encuentran
+  if (availability.length != recipeKeys.length) {
+    return 0;
   }
+  // Creamos un array en el cual almacenaremos la division de lo disponible / lo que pide la recete
+  let leftIngredients = [];
+  // Realizamos la división
+  Object.entries(recipe).forEach(([key, value]) => {
+    leftIngredients.push(Math.floor(available[key] / value));
+  });
+  // Retornamos el menor del array truncandolo al entero anterior
+  return Math.min(...leftIngredients);
 }
-
 console.log(
-  isSolved([
-    [2, 1, 1],
-    [1, 2, 2],
-    [2, 1, 1],
-  ])
+  cakes(
+    { apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100 },
+    { sugar: 500, flour: 2000, milk: 2000 }
+  )
 );

@@ -1,25 +1,29 @@
-// Your task, is to create N×N multiplication table, of size provided in parameter.
+// convert the number to a roman numeral
+function solution(number) {
+  const romanValues = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  };
 
-// For example, when given size is 3:
+  let romanNumeral = "";
 
-// 1 2 3
-// 2 4 6
-// 3 6 9
-// For the given example, the return value should be:
-
-// [[1,2,3],[2,4,6],[3,6,9]]
-
-multiplicationTable = function (size) {
-  let initialList = [];
-  let listBig = [];
-  for (let i = 1; i < size + 1; i++) {
-    initialList.push(i);
+  for (const [symbol, value] of Object.entries(romanValues)) {
+    const count = Math.floor(number / value);
+    number -= count * value;
+    romanNumeral += symbol.repeat(count);
   }
-  for (let i = 1; i < size + 1; i++) {
-    const listAdd = initialList.map((number) => number * i);
-    listBig.push(listAdd);
-  }
-  return listBig;
-};
 
-multiplicationTable(3);
+  return romanNumeral;
+}
+console.log(solution(56));

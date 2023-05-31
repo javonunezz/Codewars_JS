@@ -1,33 +1,33 @@
-// Write a function, persistence, that takes in a positive parameter num and returns its multiplicative persistence, which is the number of times you must multiply the digits in num until you reach a single digit.
+// Given a string of words, you need to find the highest scoring word.
 
-// For example (Input --> Output):
+// Each letter of a word scores points according to its position in the alphabet: a = 1, b = 2, c = 3 etc.
 
-// 39 --> 3 (because 3*9 = 27, 2*7 = 14, 1*4 = 4 and 4 has only one digit)
-// 999 --> 4 (because 9*9*9 = 729, 7*2*9 = 126, 1*2*6 = 12, and finally 1*2 = 2)
-// 4 --> 0 (because 4 is already a one-digit number)
+// For example, the score of abad is 8 (1 + 2 + 1 + 4).
 
-function persistence(num) {
-  let times = 0;
-  let bool = true;
-  if (num.toString().split("").length == 1) {
-    return 0;
-  } else {
-    while (bool) {
-      let number = num
-        .toString()
-        .split("")
-        .reduce(
-          (accumulator, currentValue) =>
-            parseInt(accumulator) * parseInt(currentValue)
-        );
-      times += 1;
-      if (number.toString().split("").length == 1) {
-        bool = false;
-      }
-      num = number;
-    }
-    return times;
-  }
+// You need to return the highest scoring word as a string.
+
+// If two words score the same, return the word that appears earliest in the original string.
+
+// All letters will be lowercase and all inputs will be valid.
+
+function high(x) {
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  let scoreList = [];
+
+  x.split(" ").forEach((word) => {
+    let scoreWord = 0;
+    word.split("").forEach((letter) => {
+      let score = 0;
+      letters.split("").forEach((element) => {
+        score += 1;
+        if (element == letter) {
+          scoreWord += score;
+        }
+      });
+    });
+    scoreList.push(scoreWord);
+  });
+  return x.split(" ")[scoreList.indexOf(Math.max(...scoreList))];
 }
 
-console.log(persistence(999));
+console.log(high("what time are we climbing up the volcano"));

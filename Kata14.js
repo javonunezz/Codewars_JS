@@ -1,43 +1,19 @@
-// Let's pretend your company just hired your friend from college and paid you a referral bonus. Awesome! To celebrate, you're taking your team out to the terrible dive bar next door and using the referral bonus to buy, and build, the largest three-dimensional beer can pyramid you can. And then probably drink those beers, because let's pretend it's Friday too.
+// Write a function named first_non_repeating_letter that takes a string input, and returns the first character that is not repeated anywhere in the string.
 
-// A beer can pyramid will square the number of cans in each level - 1 can in the top level, 4 in the second, 9 in the next, 16, 25...
+// For example, if given the input 'stress', the function should return 't', since the letter t only occurs once in the string, and occurs first in the string.
 
-// Complete the beeramid function to return the number of complete levels of a beer can pyramid you can make, given the parameters of:
+// As an added challenge, upper- and lowercase letters are considered the same character, but the function should return the correct case for the initial letter. For example, the input 'sTreSS' should return 'T'.
 
-// your referral bonus, and
+// If a string contains all repeating characters, it should return an empty string ("") or None -- see sample tests.
 
-// the price of a beer can
+function firstNonRepeatingLetter(s) {
+  const listS = [4, 3, 2, 1];
+  console.log(
+    listS.sort((a, b) => {
+      console.log("soy el a", a), console.log("soy el b", b);
+      return a - b;
+    })
+  );
+}
 
-// For example:
-
-// beeramid(1500, 2); // should === 12
-// beeramid(5000, 3); // should === 16
-
-// Returns number of complete beeramid levels
-var beeramid = function (bonus, price) {
-  let times = 0;
-  let level = 1;
-  let exit = true;
-  while (exit) {
-    if (bonus >= level * level * price) {
-      bonus = bonus - level * level * price;
-      level = level + 1;
-      times += 1;
-    } else {
-      exit = false;
-    }
-  }
-  return times;
-};
-
-
-// Returns number of complete beeramid levels
-var beeramid = function (bonus, price) {
-  var beers = Math.floor(bonus / price);
-  var levels = 0;
-
-  while (beers >= ++levels * levels) {
-    beers -= levels * levels;
-  }
-  return levels - 1;
-};
+firstNonRepeatingLetter("holaa");
